@@ -1,0 +1,39 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: pvc-inspector
+  namespace: namespace # Change to a valid namespace 
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: pvc-inspector
+  template:
+    metadata:
+      labels:
+        app: pvc-inspector
+    spec:
+      volumes:
+        - name: svc-claim1 # Enter a volume name
+          persistentVolumeClaim:
+            claimName: svc-claim1 # Enter the claimName of the volume
+      containers:
+        - name: pvc-inspector
+          image: busybox
+          command:
+            - tail
+          args:
+            - '-f'
+            - /dev/null
+          resources:
+            limits:
+              cpu: 200m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 250Mi
+          volumeMounts:
+            - name: svc-claim1 # Enter a Volumemount name
+              mountPath: /path/to/dir # Enter the mountPath yo want to connect
+          imagePullPolicy: Always
+      restartPolicy: Always
