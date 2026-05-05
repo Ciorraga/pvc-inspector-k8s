@@ -35,5 +35,6 @@ spec:
           volumeMounts:
             - name: svc-claim1 # Enter a Volumemount name
               mountPath: /path/to/dir # Enter the mountPath yo want to connect
+              readOnly: true
           imagePullPolicy: Always
       restartPolicy: Always
